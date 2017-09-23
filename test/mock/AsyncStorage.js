@@ -1,7 +1,6 @@
 export default class MockStorage {
   constructor(cache = {}) {
     this.storageCache = cache;
-    console.log({cache})
   }
 
   setItem = jest.fn((key, value) => {
@@ -13,7 +12,6 @@ export default class MockStorage {
   });
 
   getItem = jest.fn((key) => {
-    console.log({key})
     return new Promise((resolve) => {
       return this.storageCache.hasOwnProperty(key)
         ? resolve(this.storageCache[key])

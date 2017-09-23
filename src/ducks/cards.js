@@ -1,4 +1,5 @@
 import { AsyncStorage } from 'react-native'
+import _ from 'lodash'
 
 // Actions
 export const CREATE = 'flashcards/cards/CREATE'
@@ -12,9 +13,18 @@ import { errors } from '../common/constants/messages'
 import { storageKey } from '../common/constants/config'
 
 // Reducer
-export default function reducer(state = {}, action = {}) {
+export const initialState = {}
+export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
-    // do reducer stuff
+    case CREATE:
+      return { ...state, [action.card.id]: action.card }
+    case LOAD:
+      return action.cards
+    case UPDATE:
+      return { ...state, [action.id]: { ...state[action.id], ...action.card } }
+    case DELETE:
+      return _.omit(state, action.id)
+      return newState
     default:
       return state
   }
@@ -50,6 +60,7 @@ export function deleteCard(id) {
   }
 }
 
+//can probably move this somewhere else (not used in this reducer)
 export function cardLoadError() {
   return {
     type: ERROR,
@@ -58,7 +69,7 @@ export function cardLoadError() {
 }
 
 // side effects & async
-export async function getStoredCards(AsyncStorage = AsyncStorage) {  
+export async function getStoredCards(AsyncStorage = AsyncStorage) {
   return async dispatch => {
     try {
       const cards = await AsyncStorage.getItem(storageKey)

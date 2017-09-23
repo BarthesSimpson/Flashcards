@@ -1,4 +1,5 @@
 //test utils
+import { Reducer } from 'redux-testkit'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import MockAsyncStorage from '../../test/mock/AsyncStorage'
@@ -22,6 +23,7 @@ import { errors } from '../common/constants/messages'
 import { getStoredCards } from './cards'
 
 //reducer
+import { initialState } from './cards'
 import cardsReducer from './cards'
 
 //action creator tests
@@ -62,6 +64,48 @@ describe('Card action creators dispatch the correct actions', () => {
         message: errors.cardLoadErr
       }
     ])
+  })
+})
+
+//reducer tests
+describe('Card reducer handles actions correctly', () => {
+  it('should have initial state', () => {
+    expect(cardsReducer()).toEqual(initialState)
+  })
+
+  it(`handles CREATE action`, () => {
+    const action = createCard(testCard)
+    const result = { [testCard.id]: testCard }
+    Reducer(cardsReducer)
+      .expect(action)
+      .toReturnState(result)
+  })
+  it(`handles LOAD action`, () => {
+    const action = loadCards({ [testCard.id]: testCard })
+    const result = { [testCard.id]: testCard }
+    Reducer(cardsReducer)
+      .expect(action)
+      .toReturnState(result)
+  })
+  it(`handles UPDATE action`, () => {
+    const newCard = {
+      question: "What's brown and sticky?",
+      answer: 'A stick!!!!!11111!1!lololol'
+    }
+    const action = updateCard(testCard.id, newCard)
+    const result = { [testCard.id]: { ...testCard, ...newCard } }
+    Reducer(cardsReducer)
+      .withState({ [testCard.id]: testCard })
+      .expect(action)
+      .toReturnState(result)
+  })
+  it(`handles DELETE action`, () => {
+    const action = deleteCard(testCard.id)
+    const result = {}
+    Reducer(cardsReducer)
+      .withState({ [testCard.id]: testCard })
+      .expect(action)
+      .toReturnState(result)
   })
 })
 
