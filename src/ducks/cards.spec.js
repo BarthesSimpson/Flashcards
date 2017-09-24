@@ -7,13 +7,12 @@ import testCard from '../../test/mock/card'
 import { storageKey } from '../common/constants/config'
 
 //action creators
-import { CREATE, LOAD, UPDATE, DELETE, ERROR } from './cards'
+import { CREATE, READ, UPDATE, DELETE, ERROR } from './cards'
 import {
   createCard,
   loadCards,
   updateCard,
   deleteCard,
-  cardLoadError
 } from './cards'
 
 //constants
@@ -40,7 +39,7 @@ describe('Card action creators dispatch the correct actions', () => {
   })
   it('Loads cards', () => {
     store.dispatch(loadCards())
-    expect(store.getActions()).toEqual([{ type: LOAD }])
+    expect(store.getActions()).toEqual([{ type: READ }])
   })
   it('Updates an existing card', () => {
     store.dispatch(updateCard(testCard.id, testCard))
@@ -56,15 +55,6 @@ describe('Card action creators dispatch the correct actions', () => {
     store.dispatch(deleteCard(testCard.id))
     expect(store.getActions()).toEqual([{ type: DELETE, id: testCard.id }])
   })
-  it('Fires an error', () => {
-    store.dispatch(cardLoadError())
-    expect(store.getActions()).toEqual([
-      {
-        type: ERROR,
-        message: errors.cardLoadErr
-      }
-    ])
-  })
 })
 
 //reducer tests
@@ -73,21 +63,21 @@ describe('Card reducer handles actions correctly', () => {
     expect(cardsReducer()).toEqual(initialState)
   })
 
-  it(`handles CREATE action`, () => {
+  it('handles CREATE action', () => {
     const action = createCard(testCard)
     const result = { [testCard.id]: testCard }
     Reducer(cardsReducer)
       .expect(action)
       .toReturnState(result)
   })
-  it(`handles LOAD action`, () => {
+  it('handles LOAD action', () => {
     const action = loadCards({ [testCard.id]: testCard })
     const result = { [testCard.id]: testCard }
     Reducer(cardsReducer)
       .expect(action)
       .toReturnState(result)
   })
-  it(`handles UPDATE action`, () => {
+  it('handles UPDATE action', () => {
     const newCard = {
       question: "What's brown and sticky?",
       answer: 'A stick!!!!!11111!1!lololol'
@@ -99,66 +89,12 @@ describe('Card reducer handles actions correctly', () => {
       .expect(action)
       .toReturnState(result)
   })
-  it(`handles DELETE action`, () => {
+  it('handles DELETE action', () => {
     const action = deleteCard(testCard.id)
     const result = {}
     Reducer(cardsReducer)
       .withState({ [testCard.id]: testCard })
       .expect(action)
       .toReturnState(result)
-  })
-})
-
-//async tests
-describe('Card async actions resolve as expected', () => {
-  //SET UP ASYNC STORAGE
-  const cache = {
-    [storageKey]: { [testCard.id]: testCard }
-  }
-  const asyncStorage = new MockAsyncStorage(cache)
-
-  //SET UP REDUX STORE
-  const middlewares = [thunk]
-  const mockStore = configureStore(middlewares)
-  let store
-
-  beforeEach(() => {
-    store = mockStore()
-  })
-
-  it('Loads cards from AsyncStorage', async () => {
-    await store.dispatch(await getStoredCards(asyncStorage))
-    expect(store.getActions()).toEqual([
-      {
-        type: LOAD,
-        cards: cache[storageKey]
-      }
-    ])
-  })
-})
-
-describe('Card async actions reject as expected', () => {
-  // SET UP ASYNC STORAGE
-  const asyncStorage = {
-    getItem: jest.fn(() => Promise.reject('Oh noes!'))
-  }
-
-  // SET UP REDUX STORE
-  const middlewares = [thunk]
-  const mockStore = configureStore(middlewares)
-  let store
-
-  beforeEach(() => {
-    store = mockStore()
-  })
-
-  it('Handles errors from AsyncStorage', async () => {
-    await store.dispatch(await getStoredCards(asyncStorage))
-    expect(store.getActions()).toEqual([
-      {
-        type: ERROR,
-        message: errors.cardLoadErr
-      }
-    ])
   })
 })
