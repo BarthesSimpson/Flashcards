@@ -1,16 +1,10 @@
-import React from 'react'
-import { StyleSheet, Text, View, Image, StatusBar } from 'react-native'
-import { Button } from 'react-native-elements'
-import styled from 'styled-components/native'
-import { TabNavigator } from 'react-navigation'
-import { Constants } from 'expo'
-import logo from './src/img/flashr_logo_lite.png' 
+import React from "react"
+import { StyleSheet, Text, View, StatusBar } from "react-native"
+import { Button } from "react-native-elements"
+import styled from "styled-components/native"
+import { TabNavigator } from "react-navigation"
+import { Constants } from "expo"
 
-
-const FullScreenImage = styled.Image`
-  flex: 1;
-  resize-mode: contain;
-`
 const StyledView = styled.View`
   background-color: papayawhip;
   flex: 1;
@@ -30,9 +24,9 @@ const Hello = () => (
     <NiceStatusBar />
     <Button
       large
-      icon={{ name: 'squirrel', type: 'octicon' }}
+      icon={{ name: "squirrel", type: "octicon" }}
       title="HELLO"
-      buttonStyle={{ backgroundColor: 'blue' }}
+      buttonStyle={{ backgroundColor: "blue" }}
     />
   </StyledView>
 )
@@ -56,7 +50,19 @@ const Tabs = TabNavigator({
 export default class App extends React.Component {
   render() {
     return (
-        <FullScreenImage style={{width: null, height: null}} source={logo} />
+      <View style={{ flex: 1 }}>
+        <StyledStatusBar />
+        <Tabs />
+      </View>
     )
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center"
+  }
+})
