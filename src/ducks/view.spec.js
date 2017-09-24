@@ -4,8 +4,14 @@ import configureStore from 'redux-mock-store'
 import testCard from '../../test/mock/card'
 
 //action creators
-import { SET_DECK, SET_CARD, FLIP_CARD, RESET_CARD } from './view'
-import { setActiveDeck, setActiveCard, flipCard, resetCard } from './view'
+import { DATA_LOADED, SET_DECK, SET_CARD, FLIP_CARD, RESET_CARD } from './view'
+import {
+  dataLoaded,
+  setActiveDeck,
+  setActiveCard,
+  flipCard,
+  resetCard
+} from './view'
 
 //reducer
 import { initialState } from './view'
@@ -17,6 +23,10 @@ describe('View action creators dispatch the correct actions', () => {
   let store
   beforeEach(() => {
     store = mockStore()
+  })
+  it('Sets data loaded', () => {
+    store.dispatch(dataLoaded())
+    expect(store.getActions()).toEqual([{ type: DATA_LOADED }])
   })
   it('Sets the active deck', () => {
     store.dispatch(setActiveDeck(testCard.deck))
@@ -40,6 +50,13 @@ describe('View action creators dispatch the correct actions', () => {
 describe('View reducer handles actions correctly', () => {
   it('should have initial state', () => {
     expect(viewReducer()).toEqual(initialState)
+  })
+  it('handles DATA_LOADED action', () => {
+    const action = dataLoaded()
+    const result = { ...initialState, dataLoaded: true }
+    Reducer(viewReducer)
+      .expect(action)
+      .toReturnState(result)
   })
   it('handles SET_DECK action', () => {
     const action = setActiveDeck(testCard.deck)

@@ -10,6 +10,7 @@ import { storageKey } from '../common/constants/config'
 //action creators
 import { CREATE, READ as READ_DECKS, UPDATE, DELETE, ERROR } from './decks'
 import { READ as READ_CARDS } from './cards'
+import { DATA_LOADED } from './view'
 import {
   createDeck,
   loadDecks,
@@ -139,7 +140,8 @@ describe('Card async actions resolve as expected', () => {
       {
         type: READ_CARDS,
         cards: cache[storageKey].cards
-      }
+      },
+      { type: DATA_LOADED }
     ])
   })
 })

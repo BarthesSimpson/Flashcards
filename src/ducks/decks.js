@@ -12,6 +12,7 @@ export const UPDATE = 'flashcards/decks/UPDATE'
 export const DELETE = 'flashcards/decks/DELETE'
 export const ERROR = 'flashcards/decks/ERROR'
 import { loadCards } from './cards'
+import { dataLoaded } from './view'
 
 // Reducer
 export const initialState = {}
@@ -69,13 +70,21 @@ export function dataLoadError() {
 }
 
 // side effects & async
-export async function getStoredData(AsyncStorage = AsyncStorage) {
+export function getStoredData(storage = AsyncStorage) {
   return async dispatch => {
     try {
-      const data = await AsyncStorage.getItem(storageKey)
+      const data = await storage.getItem(storageKey)
+      if (!data) {
+        data = { decks: {}, cards: {} }
+        storage.setItem(storageKey, JSON.stringify(data))
+      } else {
+        data = JSON.parse(data)
+      }
       dispatch(loadDecks(data.decks))
       dispatch(loadCards(data.cards))
+      dispatch(dataLoaded())
     } catch (error) {
+      console.error(error)
       dispatch(dataLoadError())
     }
   }

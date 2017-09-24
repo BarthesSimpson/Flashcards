@@ -1,4 +1,5 @@
 // Actions
+export const DATA_LOADED = 'flashcards/view/DATA_LOADED'
 export const SET_DECK = 'flashcards/view/SET_DECK'
 export const SET_CARD = 'flashcards/view/SET_CARD'
 export const FLIP_CARD = 'flashcards/view/FLIP_CARD'
@@ -10,12 +11,15 @@ import { storageKey } from '../common/constants/config'
 
 // Reducer
 export const initialState = {
+  dataLoaded: false,
   flipped: false
 }
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
+    case DATA_LOADED:
+      return { ...state, dataLoaded: true }
     case SET_DECK:
-    return { ...state, activeDeck: action.id }
+      return { ...state, activeDeck: action.id }
     case SET_CARD:
       return { ...state, activeCard: action.id }
     case FLIP_CARD:
@@ -28,6 +32,12 @@ export default function reducer(state = initialState, action = {}) {
 }
 
 // Action Creators
+export function dataLoaded() {
+  return {
+    type: DATA_LOADED,
+  }
+}
+
 export function setActiveDeck(id) {
   return {
     type: SET_DECK,
@@ -44,12 +54,12 @@ export function setActiveCard(id) {
 
 export function flipCard() {
   return {
-    type: FLIP_CARD,
+    type: FLIP_CARD
   }
 }
 
 export function resetCard() {
   return {
-    type: RESET_CARD,
+    type: RESET_CARD
   }
 }
