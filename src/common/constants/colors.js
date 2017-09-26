@@ -1,0 +1,5 @@
+export const darklime = '#051405'
+export const eggyolk = '#FFC904'
+export const firebrick = '#B22222'
+export const maroon = '#800000'
+export const palelime = '#c1f0c1'

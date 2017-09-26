@@ -7,7 +7,7 @@ import Decks from '../Decks'
 
 //REDUX
 import { connect } from 'react-redux'
-import { getStoredData } from '../../ducks/decks'
+import { getStoredData, clearStoredData } from '../../ducks/decks'
 
 //STYLING
 const FullScreenImage = styled.Image`
@@ -15,7 +15,6 @@ const FullScreenImage = styled.Image`
   resize-mode: contain;
 `
 //RENDER
-
 const Splash = loadData => (
   <FullScreenImage
     style={{ width: null, height: null }}
@@ -26,6 +25,7 @@ const Splash = loadData => (
 export const LandingScreen = ({ dataLoaded, loadData }) =>
   dataLoaded ? <Decks /> : Splash(loadData)
 
+//CONNECT
 const mapStateToProps = state => {
   return {
     dataLoaded: state.view.dataLoaded
@@ -36,6 +36,7 @@ const mapDispatchToProps = dispatch => {
   return {
     loadData: () => {
       setTimeout(() => dispatch(getStoredData()), 1000)
+      // setTimeout(() => dispatch(clearStoredData()), 1000)
     }
   }
 }

@@ -8,7 +8,14 @@ import testCard from '../../test/mock/card'
 import { storageKey } from '../common/constants/config'
 
 //action creators
-import { CREATE, READ as READ_DECKS, UPDATE, DELETE, ERROR } from './decks'
+import {
+  CREATE,
+  READ as READ_DECKS,
+  UPDATE,
+  DELETE,
+  ERROR,
+  CLEAR
+} from './decks'
 import { READ as READ_CARDS } from './cards'
 import { DATA_LOADED } from './view'
 import {
@@ -16,17 +23,20 @@ import {
   loadDecks,
   updateDeck,
   deleteDeck,
-  dataLoadError
+  dataLoadError,
+  dataClearError,
+  dataWriteError
 } from './decks'
 
 //constants
 import { errors } from '../common/constants/messages'
 
 //async
-import { getStoredData } from './decks'
+import { getStoredData, setStoredData, clearStoredData } from './decks'
 
 //reducer
 import { initialState } from './decks'
+import { initialState as initialCards } from './cards'
 import decksReducer from './decks'
 
 //action creator tests
@@ -79,6 +89,7 @@ describe('Deck reducer handles actions correctly', () => {
     const action = createDeck(testDeck)
     const result = { [testDeck.id]: testDeck }
     Reducer(decksReducer)
+      .withState({})
       .expect(action)
       .toReturnState(result)
   })
@@ -144,12 +155,29 @@ describe('Card async actions resolve as expected', () => {
       { type: DATA_LOADED }
     ])
   })
+
+  it('Clears data from AsyncStorage', async () => {
+    await store.dispatch(await clearStoredData(asyncStorage))
+    expect(store.getActions()).toEqual([
+      {
+        type: READ_DECKS,
+        decks: initialState
+      },
+      {
+        type: READ_CARDS,
+        cards: initialCards
+      },
+      { type: DATA_LOADED }
+    ])
+  })
 })
 
 describe('Card async actions reject as expected', () => {
   // SET UP ASYNC STORAGE
-  const asyncStorage = {
-    getItem: jest.fn(() => Promise.reject('Oh noes!'))
+  const failStorage = {
+    getItem: jest.fn(() => Promise.reject('Oh noes!')),
+    setItem: jest.fn(() => Promise.reject('Oh noes!')),
+    removeItem: jest.fn(() => Promise.reject('Oh noes!'))
   }
 
   // SET UP REDUX STORE
@@ -161,12 +189,30 @@ describe('Card async actions reject as expected', () => {
     store = mockStore()
   })
 
-  it('Handles errors from AsyncStorage', async () => {
-    await store.dispatch(await getStoredData(asyncStorage))
+  it('Handles read error from AsyncStorage', async () => {
+    await store.dispatch(await getStoredData(failStorage))
     expect(store.getActions()).toEqual([
       {
         type: ERROR,
         message: errors.dataLoadErr
+      }
+    ])
+  })
+  it('Handles write error from AsyncStorage', async () => {
+    await store.dispatch(await setStoredData(null, null, failStorage))
+    expect(store.getActions()).toEqual([
+      {
+        type: ERROR,
+        message: errors.dataWriteErr
+      }
+    ])
+  })
+  it('Handles clear error from AsyncStorage', async () => {
+    await store.dispatch(await clearStoredData(failStorage))
+    expect(store.getActions()).toEqual([
+      {
+        type: ERROR,
+        message: errors.dataClearErr
       }
     ])
   })

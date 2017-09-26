@@ -11,11 +11,22 @@ export const READ = 'flashcards/decks/READ'
 export const UPDATE = 'flashcards/decks/UPDATE'
 export const DELETE = 'flashcards/decks/DELETE'
 export const ERROR = 'flashcards/decks/ERROR'
-import { loadCards } from './cards'
+export const CLEAR = 'flashcards/decks/CLEAR'
+
+import { loadCards, initialState as initialCards } from './cards'
 import { dataLoaded } from './view'
 
 // Reducer
-export const initialState = {}
+export const initialState = {
+  Jokes: {
+    id: 'Jokes',
+    description: 'Very funny joakes!!'
+  },
+  Riddles: {
+    id: 'Riddles',
+    description: 'Will u solve these mystery!?'
+  }
+}
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
     case CREATE:
@@ -61,6 +72,12 @@ export function deleteDeck(id) {
   }
 }
 
+export function clearStorage() {
+  return {
+    type: CLEAR
+  }
+}
+
 //should move this and import
 export function dataLoadError() {
   return {
@@ -68,17 +85,30 @@ export function dataLoadError() {
     message: errors.dataLoadErr
   }
 }
+export function dataClearError() {
+  return {
+    type: ERROR,
+    message: errors.dataClearErr
+  }
+}
+export function dataWriteError() {
+  return {
+    type: ERROR,
+    message: errors.dataWriteErr
+  }
+}
 
 // side effects & async
 export function getStoredData(storage = AsyncStorage) {
   return async dispatch => {
     try {
-      const data = await storage.getItem(storageKey)
+      let data = await storage.getItem(storageKey)
       if (!data) {
-        data = { decks: {}, cards: {} }
+        data = { decks: initialState, cards: initialCards }
+        console.log('setting', data)
         storage.setItem(storageKey, JSON.stringify(data))
       } else {
-        data = JSON.parse(data)
+        data = typeof data === 'string' ? JSON.parse(data) : data
       }
       dispatch(loadDecks(data.decks))
       dispatch(loadCards(data.cards))
@@ -86,6 +116,36 @@ export function getStoredData(storage = AsyncStorage) {
     } catch (error) {
       console.error(error)
       dispatch(dataLoadError())
+    }
+  }
+}
+
+export function setStoredData(data, next, storage = AsyncStorage) {
+  return async dispatch => {
+    try {
+      const write = await storage.setItem(storageKey, JSON.stringify(data))
+      if (write) {
+        next()
+      }
+    } catch (error) {
+      console.error(error)
+      dispatch(dataWriteError())
+    }
+  }
+}
+
+export function clearStoredData(storage = AsyncStorage) {
+  return async dispatch => {
+    try {
+      const clear = await storage.removeItem(storageKey)
+      if (clear) {
+        dispatch(loadDecks(initialState))
+        dispatch(loadCards(initialCards))
+        dispatch(dataLoaded())
+      }
+    } catch (error) {
+      console.error(error)
+      dispatch(dataClearError())
     }
   }
 }
