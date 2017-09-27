@@ -1,5 +1,6 @@
 import { AsyncStorage } from 'react-native'
 import _ from 'lodash'
+import { createSelector } from 'reselect'
 
 // Constants
 import { errors } from '../common/constants/messages'
@@ -25,6 +26,10 @@ export const initialState = {
   Riddles: {
     id: 'Riddles',
     description: 'Will u solve these mystery!?'
+  },
+  Slanders: {
+    id: 'Slanders',
+    description: 'How dare you?!'
   }
 }
 export default function reducer(state = initialState, action = {}) {
@@ -97,6 +102,25 @@ export function dataWriteError() {
     message: errors.dataWriteErr
   }
 }
+
+// Selectors
+const decksSelector = state => state.decks
+const cardsSelector = state => state.cards
+export const getDeckLengths = createSelector(
+  decksSelector,
+  cardsSelector,
+  (decks, cards) => {
+    const cardCount = Object.keys(cards).reduce((l, r) => {
+      const d = cards[r].deck
+      l[d] = l[d] ? l[d] + 1 : 1
+      return l
+    }, {})
+    return Object.keys(decks).reduce((l, r) => {
+      l[r] = cardCount[r] ? cardCount[r] : 0
+      return l
+    }, {})
+  }
+)
 
 // side effects & async
 export function getStoredData(storage = AsyncStorage) {

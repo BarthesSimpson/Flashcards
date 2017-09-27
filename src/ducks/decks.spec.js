@@ -31,6 +31,8 @@ import {
 //constants
 import { errors } from '../common/constants/messages'
 
+//selectors
+import { getDeckLengths } from './decks'
 //async
 import { getStoredData, setStoredData, clearStoredData } from './decks'
 
@@ -119,6 +121,22 @@ describe('Deck reducer handles actions correctly', () => {
       .withState({ [testDeck.id]: testDeck })
       .expect(action)
       .toReturnState(result)
+  })
+})
+
+//selector tests
+describe('Decks selectors work correctly', () => {
+  it('getDeckLengths correctly counts cards', () => {
+    const state = {
+      decks: initialState,
+      cards: initialCards
+    }
+    const count = {
+      Jokes: 2,
+      Riddles: 3,
+      Slanders: 0
+    }
+    expect(getDeckLengths(state)).toEqual(count)
   })
 })
 

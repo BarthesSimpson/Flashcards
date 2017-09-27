@@ -8,12 +8,7 @@ import { storageKey } from '../common/constants/config'
 
 //action creators
 import { CREATE, READ, UPDATE, DELETE, ERROR } from './cards'
-import {
-  createCard,
-  loadCards,
-  updateCard,
-  deleteCard,
-} from './cards'
+import { createCard, loadCards, updateCard, deleteCard } from './cards'
 
 //constants
 import { errors } from '../common/constants/messages'
@@ -62,11 +57,11 @@ describe('Card reducer handles actions correctly', () => {
   it('should have initial state', () => {
     expect(cardsReducer()).toEqual(initialState)
   })
-
   it('handles CREATE action', () => {
     const action = createCard(testCard)
     const result = { [testCard.id]: testCard }
     Reducer(cardsReducer)
+      .withState({})
       .expect(action)
       .toReturnState(result)
   })
