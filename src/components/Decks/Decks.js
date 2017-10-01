@@ -41,15 +41,7 @@ const styles = StyleSheet.create({
   }
 })
 
-// Partials
-
-const NiceStatusBar = () => {
-  return (
-    <View style={styles.statusBar}>
-      <StatusBar translucent />
-    </View>
-  )
-}
+// PARTIALS
 
 const DecksList = (decks, deckLengths, navigation) => {
   return (
@@ -73,7 +65,6 @@ const DecksList = (decks, deckLengths, navigation) => {
 //RENDER
 export const Decks = ({ decks, deckLengths, deckTitles, navigation }) => (
   <View>
-    {/* {NiceStatusBar()} */}
     {deckTitles.length ? (
       DecksList(decks, deckLengths, navigation)
     ) : (

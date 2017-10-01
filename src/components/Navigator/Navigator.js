@@ -10,7 +10,8 @@ import { StackNavigator } from 'react-navigation'
 //SCREENS
 import Decks from '../Decks'
 import Deck from '../Deck'
-// import Quiz from '../Quiz'
+import Quiz from '../Quiz'
+import Edit from '../Edit'
 
 const Navigator = StackNavigator({
   Decks: {
@@ -22,7 +23,19 @@ const Navigator = StackNavigator({
   Deck: {
     screen: Deck,
     navigationOptions: ({ navigation }) => {
-      title: navigation.state.params.deck
+      return { title: navigation.state.params.deck.id }
+    }
+  },
+  Quiz: {
+    screen: Quiz,
+    navigationOptions: ({ navigation }) => {
+      return { title: `${navigation.state.params.deck.id} Quiz` }
+    }
+  },
+  Edit: {
+    screen: Edit,
+    navigationOptions: ({ navigation }) => {
+      return { title: `Edit ${navigation.state.params.deck.id}` }
     }
   }
 })

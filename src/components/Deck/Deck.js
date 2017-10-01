@@ -37,13 +37,13 @@ var styles = StyleSheet.create({
   buttons: {},
   button: {},
   buttonText: {
-    color: eggyolk,    
+    color: eggyolk,
     fontSize: 12,
     textAlign: 'center'
   }
 })
 
-// Partials
+// PARTIALS
 const DeckTitle = deck => {
   return <Text style={styles.deckTitle}>{deck.id}</Text>
 }
@@ -61,28 +61,18 @@ const Buttons = (start, edit) => {
   )
 }
 
+// NAVIGATION THINKS
+const startQuiz = navigation => () =>
+  navigation.navigate('Quiz', { deck: navigation.state.params.deck, title: 'butt' })
+const editDeck = navigation => () =>
+  navigation.navigate('Edit', { deck: navigation.state.params.deck })
+
 //RENDER
-export const Deck = ({ navigation, start, edit }) => (
+export const Deck = ({ navigation }) => (
   <View>
     {DeckTitle(navigation.state.params.deck)}
-    {Buttons(start, edit)}
+    {Buttons(startQuiz(navigation), editDeck(navigation))}
   </View>
 )
 
-//CONNECT
-const mapStateToProps = state => {
-  return {
-    // deck: state.decks[state.activeDeck]
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    start: () => {},
-    edit: () => {}
-    // start: dispatch(),
-    // edit: dispatch()
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Deck)
+export default Deck

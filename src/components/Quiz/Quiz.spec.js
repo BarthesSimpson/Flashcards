@@ -1,5 +1,5 @@
 import React from 'react'
-import Deck from './'
+import Quiz from './'
 import { store } from '../../ducks/'
 import renderer from 'react-test-renderer'
 import testDeck from '../../../test/mock/deck'
@@ -11,7 +11,7 @@ const mockNavigation = {
 
 it('renders without crashing', () => {
   const rendered = renderer
-    .create(<Deck store={store} navigation={mockNavigation} />)
+    .create(<Quiz store={store} navigation={mockNavigation} />)
     .toJSON()
   expect(rendered).toBeTruthy()
 })
