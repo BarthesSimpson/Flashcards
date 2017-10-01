@@ -44,9 +44,7 @@ var styles = StyleSheet.create({
 })
 
 // Partials
-
 const DeckTitle = deck => {
-  console.log({deck})
   return <Text style={styles.deckTitle}>{deck.id}</Text>
 }
 
