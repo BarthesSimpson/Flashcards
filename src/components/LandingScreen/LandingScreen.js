@@ -3,7 +3,7 @@ import React from 'react'
 import { Image } from 'react-native'
 import styled from 'styled-components/native'
 import logo from '../../img/flashr_logo_lite.png'
-import Decks from '../Decks'
+import Navigator from '../Navigator'
 
 //REDUX
 import { connect } from 'react-redux'
@@ -15,7 +15,7 @@ const FullScreenImage = styled.Image`
   resize-mode: contain;
 `
 //RENDER
-const Splash = loadData => (
+export const Splash = loadData => (
   <FullScreenImage
     style={{ width: null, height: null }}
     source={logo}
@@ -23,7 +23,7 @@ const Splash = loadData => (
   />
 )
 export const LandingScreen = ({ dataLoaded, loadData }) =>
-  dataLoaded ? <Decks /> : Splash(loadData)
+  dataLoaded ? <Navigator /> : Splash(loadData)
 
 //CONNECT
 const mapStateToProps = state => {

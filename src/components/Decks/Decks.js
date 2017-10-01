@@ -16,9 +16,9 @@ import { getDeckLengths } from '../../ducks/decks'
 //STYLING
 import { eggyolk, firebrick, darklime } from '../../common/constants/colors.js'
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   statusBar: {
-    height: Constants.statusBarHeight,
+    height: Constants.statusBarHeight
   },
   container: {
     backgroundColor: darklime
@@ -51,12 +51,16 @@ const NiceStatusBar = () => {
   )
 }
 
-const DecksList = (decks, deckLengths) => {
+const DecksList = (decks, deckLengths, navigation) => {
   return (
     <View style={styles.container}>
       {Object.keys(decks).map(d => {
         return (
-          <TouchableOpacity onPress={() => {}} style={styles.deckbox} key={d}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Deck', { deck: decks[d] })}
+            style={styles.deckbox}
+            key={d}
+          >
             <Text style={styles.deckTitle}>{d}</Text>
             <Text style={styles.cardCount}>{`(${deckLengths[d]} cards)`}</Text>
           </TouchableOpacity>
@@ -67,10 +71,14 @@ const DecksList = (decks, deckLengths) => {
 }
 
 //RENDER
-export const Decks = ({ decks, deckLengths, deckTitles }) => (
+export const Decks = ({ decks, deckLengths, deckTitles, navigation }) => (
   <View>
-    {NiceStatusBar()}
-    {deckTitles.length ? DecksList(decks, deckLengths) : <Text>Shee-it</Text>}
+    {/* {NiceStatusBar()} */}
+    {deckTitles.length ? (
+      DecksList(decks, deckLengths, navigation)
+    ) : (
+      <Text>Shee-it</Text>
+    )}
   </View>
 )
 
