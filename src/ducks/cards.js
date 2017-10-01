@@ -9,26 +9,31 @@ export const DELETE = 'flashcards/cards/DELETE'
 // Reducer
 export const initialState = {
   '1': {
+    id: '1',
     deck: 'Jokes',
     question: "What's orange and sounds like a parrot?",
     answer: 'A carrot'
   },
   '2': {
+    id: '2',    
     deck: 'Jokes',
     question: 'Take my wife',
     answer: 'No, please - take her'
   },
   '3': {
+    id: '3',
     deck: 'Riddles',
     question: 'When is a raven like a writing desk',
     answer: 'Nevermore'
   },
   '4': {
+    id: '4',    
     deck: 'Riddles',
     question: "What's black and white and red all over?",
     answer: 'A newspaper'
   },
   '5': {
+    id: '5',        
     deck: 'Riddles',
     question: 'Why did the chicken cross the road',
     answer: 'Because he lacked integrity'
