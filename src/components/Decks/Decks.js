@@ -14,11 +14,20 @@ import { connect } from 'react-redux'
 import { getDeckLengths } from '../../ducks/decks'
 
 //STYLING
-import { eggyolk, firebrick, darklime } from '../../common/constants/colors.js'
+import {
+  base,
+  eggyolk,
+  firebrick,
+  darklime
+} from '../../common/constants/colors.js'
 
 const styles = StyleSheet.create({
   statusBar: {
     height: Constants.statusBarHeight
+  },
+  card: {
+    backgroundColor: base,
+    flex: 1
   },
   container: {
     backgroundColor: darklime
@@ -64,11 +73,11 @@ const DecksList = (decks, deckLengths, navigation) => {
 
 //RENDER
 export const Decks = ({ decks, deckLengths, deckTitles, navigation }) => (
-  <View>
+  <View style={styles.card}>
     {deckTitles.length ? (
       DecksList(decks, deckLengths, navigation)
     ) : (
-      <Text>Shee-it</Text>
+      <Text>You don't have any decks yet!</Text>
     )}
   </View>
 )
