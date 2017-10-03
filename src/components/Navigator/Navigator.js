@@ -12,6 +12,7 @@ import Decks from '../Decks'
 import Deck from '../Deck'
 import Quiz from '../Quiz'
 import Edit from '../Edit'
+import NewDeck from '../NewDeck'
 
 //STYLING
 import { accent2, base, darklime } from '../../common/constants/colors'
@@ -22,9 +23,9 @@ const styleSettings = {
   headerBackTitleStyle: {
     color: darklime
   },
-  headerTintColor: darklime,
+  headerTintColor: darklime
 }
-const Navigator = StackNavigator({
+export default StackNavigator({
   Decks: {
     screen: Decks,
     navigationOptions: {
@@ -41,6 +42,13 @@ const Navigator = StackNavigator({
       }
     }
   },
+  // NewDeck: {
+  //   screen: NewDeck,
+  //   navigationOptions: {
+  //     title: 'New Deck',
+  //     ...styleSettings
+  //   }
+  // },
   Quiz: {
     screen: Quiz,
     navigationOptions: ({ navigation }) => {
@@ -60,5 +68,3 @@ const Navigator = StackNavigator({
     }
   }
 })
-
-export default () => <Navigator />

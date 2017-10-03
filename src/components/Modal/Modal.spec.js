@@ -1,5 +1,5 @@
 import React from 'react'
-import Navigator from './'
+import Modal from './'
 import { Provider } from 'react-redux'
 import { store } from '../../ducks/'
 import renderer from 'react-test-renderer'
@@ -8,7 +8,7 @@ it('renders without crashing', () => {
   const rendered = renderer
     .create(
       <Provider store={store}>
-        <Navigator screenProps={{ rootNavigation: 'dummy' }} />
+        <Modal />
       </Provider>
     )
     .toJSON()

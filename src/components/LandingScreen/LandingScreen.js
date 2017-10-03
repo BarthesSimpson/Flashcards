@@ -4,6 +4,7 @@ import { Image } from 'react-native'
 import styled from 'styled-components/native'
 import logo from '../../img/flashr_logo_lite.png'
 import Navigator from '../Navigator'
+import Modal from '../Modal'
 
 //REDUX
 import { connect } from 'react-redux'
@@ -23,7 +24,7 @@ export const Splash = loadData => (
   />
 )
 export const LandingScreen = ({ dataLoaded, loadData }) =>
-  dataLoaded ? <Navigator /> : Splash(loadData)
+  dataLoaded ? <Modal /> : Splash(loadData)
 
 //CONNECT
 const mapStateToProps = state => {

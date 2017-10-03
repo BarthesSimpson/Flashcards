@@ -45,7 +45,7 @@ var styles = StyleSheet.create({
     backgroundColor: firebrick,
     alignSelf: 'stretch',
     padding: 10,
-    marginBottom: 1,
+    marginBottom: 1
   },
   liteButton: {
     backgroundColor: accent1
@@ -60,41 +60,10 @@ var styles = StyleSheet.create({
   }
 })
 
-// PARTIALS
-const DeckDescription = deck => {
-  return <Text style={styles.deckDescription}>{deck.description}</Text>
-}
-
-const Buttons = (start, edit) => {
-  return (
-    <View style={styles.buttons}>
-      <TouchableOpacity onPress={start} style={styles.button}>
-        <Text style={styles.buttonText}> Start Quiz </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={edit}
-        style={[styles.button, styles.liteButton]}
-      >
-        <Text style={[styles.buttonText, styles.liteButtonText]}>
-          {' '}
-          View/Edit Cards{' '}
-        </Text>
-      </TouchableOpacity>
-    </View>
-  )
-}
-
-// NAVIGATION THUNKS
-const startQuiz = navigation => () =>
-  navigation.navigate('Quiz', { deck: navigation.state.params.deck })
-const editDeck = navigation => () =>
-  navigation.navigate('Edit', { deck: navigation.state.params.deck })
-
 //RENDER
 export const Deck = ({ navigation }) => (
   <View style={styles.container}>
-    {DeckDescription(navigation.state.params.deck)}
-    {Buttons(startQuiz(navigation), editDeck(navigation))}
+    <Text> Add a deck </Text>
   </View>
 )
 
