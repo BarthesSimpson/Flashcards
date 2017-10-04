@@ -20,6 +20,7 @@ const styleSettings = {
   headerStyle: {
     backgroundColor: accent2
   },
+  headerTitleStyle: { textAlign: 'center', alignSelf: 'flex-start' },
   headerBackTitleStyle: {
     color: darklime
   },
@@ -42,13 +43,6 @@ export default StackNavigator({
       }
     }
   },
-  // NewDeck: {
-  //   screen: NewDeck,
-  //   navigationOptions: {
-  //     title: 'New Deck',
-  //     ...styleSettings
-  //   }
-  // },
   Quiz: {
     screen: Quiz,
     navigationOptions: ({ navigation }) => {

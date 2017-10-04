@@ -1,11 +1,12 @@
 //REACT
 import React from 'react'
 import {
+  TextInput,
   TouchableOpacity,
   View,
+  KeyboardAvoidingView,
   Text,
-  StyleSheet,
-  StatusBar
+  StyleSheet
 } from 'react-native'
 import { Constants } from 'expo'
 
@@ -24,8 +25,11 @@ import {
 } from '../../common/constants/colors.js'
 
 var styles = StyleSheet.create({
-  statusBar: {
-    height: Constants.statusBarHeight
+  title: {
+    fontSize: 24
+  },
+  input: {
+    marginTop: 16
   },
   container: {
     backgroundColor: base,
@@ -63,7 +67,12 @@ var styles = StyleSheet.create({
 //RENDER
 export const Deck = ({ navigation }) => (
   <View style={styles.container}>
-    <Text> Add a deck </Text>
+    <Text style={styles.title}> Add a deck </Text>
+    <KeyboardAvoidingView>
+      <TextInput style={styles.input} />
+      <TextInput style={styles.input} />
+      <TextInput style={styles.input} />
+    </KeyboardAvoidingView>
   </View>
 )
 
