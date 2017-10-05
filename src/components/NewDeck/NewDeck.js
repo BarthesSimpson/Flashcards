@@ -8,6 +8,7 @@ import {
   Text,
   StyleSheet
 } from 'react-native'
+const t = require('tcomb-form-native')
 import { Constants } from 'expo'
 
 //REDUX
@@ -64,16 +65,28 @@ var styles = StyleSheet.create({
   }
 })
 
+//PARTIALS
+const Form = t.form.Form
+
+const newDeckModel = t.struct({
+  name: t.String,
+  description: t.String
+})
 //RENDER
-export const Deck = ({ navigation }) => (
-  <View style={styles.container}>
-    <Text style={styles.title}> Add a deck </Text>
-    <KeyboardAvoidingView>
+class Deck extends React.Component {
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}> Add a deck </Text>
+        <KeyboardAvoidingView>
+          <Form ref="form" type={newDeckModel} />
+          {/* <TextInput style={styles.input} />
       <TextInput style={styles.input} />
-      <TextInput style={styles.input} />
-      <TextInput style={styles.input} />
-    </KeyboardAvoidingView>
-  </View>
-)
+      <TextInput style={styles.input} /> */}
+        </KeyboardAvoidingView>
+      </View>
+    )
+  }
+}
 
 export default Deck
