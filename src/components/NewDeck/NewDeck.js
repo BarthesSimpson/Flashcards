@@ -13,7 +13,7 @@ import { Constants } from 'expo'
 
 //REDUX
 import { connect } from 'react-redux'
-import { getDeckLengths } from '../../ducks/decks'
+import { addNewDeck } from '../../ducks/decks'
 
 //STYLING
 import {
@@ -36,12 +36,6 @@ var styles = StyleSheet.create({
   container: {
     backgroundColor: base,
     flex: 1
-  },
-  formcontainer: {
-    // paddingLeft: 1,
-    // paddingRight: 1,
-    flex: 1,
-    alignSelf: 'center'
   },
   deckDescription: {
     fontSize: 16,
@@ -109,9 +103,10 @@ const options = {
 //RENDER
 class NewDeck extends React.Component {
   render() {
+    console.log(this.props)
+    const { addDeck, state, navigation } = this.props
     return (
       <View style={styles.container}>
-        {/* <View style={styles.formcontainer}> */}
         <Text style={styles.title}> Add a deck </Text>
         <KeyboardAvoidingView>
           <Form
@@ -120,14 +115,26 @@ class NewDeck extends React.Component {
             options={options}
             stylesheet={stylesheet}
           />
-          <TouchableOpacity onPress={() => {}} style={styles.button}>
+          <TouchableOpacity
+            onPress={() => {
+              const deck = this.refs.form.getValue()
+              addDeck({ ...deck, id: deck.name }, state, () => {
+                {/* navigation.navigate('Deck', { deck: deck.name }) TODO: Get this working*/}
+                navigation.goBack()
+              })
+            }}
+            style={styles.button}
+          >
             <Text style={styles.buttonText}> Add Deck </Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
-        {/* </View> */}
       </View>
     )
   }
 }
 
-export default NewDeck
+const mapStateToProps = state => ({ state })
+const mapDispatchToProps = dispatch => ({
+  addDeck: (deck, state, next) => dispatch(addNewDeck(deck, state, next))
+})
+export default connect(mapStateToProps, mapDispatchToProps)(NewDeck)

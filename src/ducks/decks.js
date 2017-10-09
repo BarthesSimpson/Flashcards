@@ -123,6 +123,25 @@ export const getDeckLengths = createSelector(
 )
 
 // side effects & async
+export function addNewDeck(deck, state, next) {
+  return async dispatch => {
+    dispatch(createDeck(deck))
+    dispatch(
+      setStoredData(
+        { ...state, decks: { ...state.decks, [deck.id]: deck } },
+        next
+      )
+    )
+  }
+}
+
+export function removeDeck(id, state, next) {
+  return async dispatch => {
+    dispatch(deleteDeck(id))
+    dispatch(setStoredData({ ...state, decks: _.omit(state.decks, id) }, next))
+  }
+}
+
 export function getStoredData(storage = AsyncStorage) {
   return async dispatch => {
     try {
@@ -148,9 +167,7 @@ export function setStoredData(data, next, storage = AsyncStorage) {
   return async dispatch => {
     try {
       const write = await storage.setItem(storageKey, JSON.stringify(data))
-      if (write) {
-        next()
-      }
+      if (next) next()
     } catch (error) {
       console.error(error)
       dispatch(dataWriteError())
@@ -162,11 +179,9 @@ export function clearStoredData(storage = AsyncStorage) {
   return async dispatch => {
     try {
       const clear = await storage.removeItem(storageKey)
-      if (clear) {
-        dispatch(loadDecks(initialState))
-        dispatch(loadCards(initialCards))
-        dispatch(dataLoaded())
-      }
+      dispatch(loadDecks(initialState))
+      dispatch(loadCards(initialCards))
+      dispatch(dataLoaded())
     } catch (error) {
       console.error(error)
       dispatch(dataClearError())

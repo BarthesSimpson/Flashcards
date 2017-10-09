@@ -173,6 +173,13 @@ describe('Card async actions resolve as expected', () => {
       { type: DATA_LOADED }
     ])
   })
+  it('writes data to AsyncStorage', async () => {
+    const next = jest.fn()
+    await store.dispatch(
+      await setStoredData(null, next, asyncStorage)
+    )
+    expect(next.mock.calls.length).toBe(1)
+  })
 
   it('Clears data from AsyncStorage', async () => {
     await store.dispatch(await clearStoredData(asyncStorage))
@@ -217,13 +224,15 @@ describe('Card async actions reject as expected', () => {
     ])
   })
   it('Handles write error from AsyncStorage', async () => {
-    await store.dispatch(await setStoredData(null, null, failStorage))
+    const next = jest.fn()
+    await store.dispatch(await setStoredData(null, next, failStorage))
     expect(store.getActions()).toEqual([
       {
         type: ERROR,
         message: errors.dataWriteErr
       }
     ])
+    expect(next.mock.calls.length).toBe(0)
   })
   it('Handles clear error from AsyncStorage', async () => {
     await store.dispatch(await clearStoredData(failStorage))
