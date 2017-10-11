@@ -13,11 +13,15 @@ import { createCard, loadCards, updateCard, deleteCard } from './cards'
 //constants
 import { errors } from '../common/constants/messages'
 
+//selectors
+import { getCards } from './cards'
+
 //async
 import { getStoredCards } from './cards'
 
 //reducer
 import { initialState } from './cards'
+import { initialDecks } from './decks'
 import cardsReducer from './cards'
 
 //action creator tests
@@ -91,5 +95,30 @@ describe('Card reducer handles actions correctly', () => {
       .withState({ [testCard.id]: testCard })
       .expect(action)
       .toReturnState(result)
+  })
+})
+
+//selector tests
+describe('Cards selectors work correctly', () => {
+  it('getCards correctly gets cards', () => {
+    const state = {
+      decks: initialDecks,
+      cards: initialState
+    }
+    const jokeCards = [
+      {
+        id: '1',
+        deck: 'Jokes',
+        question: "What's orange and sounds like a parrot?",
+        answer: 'A carrot'
+      },
+      {
+        id: '2',
+        deck: 'Jokes',
+        question: 'Take my wife',
+        answer: 'No, please - take her'
+      }
+    ]
+    expect(getCards('Jokes')(state)).toEqual(jokeCards)
   })
 })

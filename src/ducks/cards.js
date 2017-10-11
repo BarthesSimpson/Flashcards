@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { createSelector } from 'reselect'
 
 // Actions
 export const CREATE = 'flashcards/cards/CREATE'
@@ -15,7 +16,7 @@ export const initialState = {
     answer: 'A carrot'
   },
   '2': {
-    id: '2',    
+    id: '2',
     deck: 'Jokes',
     question: 'Take my wife',
     answer: 'No, please - take her'
@@ -27,13 +28,13 @@ export const initialState = {
     answer: 'Nevermore'
   },
   '4': {
-    id: '4',    
+    id: '4',
     deck: 'Riddles',
     question: "What's black and white and red all over?",
     answer: 'A newspaper'
   },
   '5': {
-    id: '5',        
+    id: '5',
     deck: 'Riddles',
     question: 'Why did the chicken cross the road',
     answer: 'Because he lacked integrity'
@@ -83,3 +84,12 @@ export function deleteCard(id) {
     id
   }
 }
+
+// Selectors
+const cardsSelector = state => state.cards
+export const getCards = deck =>
+  createSelector(cardsSelector, cards =>
+    Object.keys(cards)
+      .filter(key => cards[key].deck === deck)
+      .map(key => cards[key])
+  )

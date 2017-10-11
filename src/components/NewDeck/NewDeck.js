@@ -103,7 +103,6 @@ const options = {
 //RENDER
 class NewDeck extends React.Component {
   render() {
-    console.log(this.props)
     const { addDeck, state, navigation } = this.props
     return (
       <View style={styles.container}>

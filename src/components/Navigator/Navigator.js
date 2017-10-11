@@ -20,7 +20,7 @@ const styleSettings = {
   headerStyle: {
     backgroundColor: accent2
   },
-  headerTitleStyle: { textAlign: 'center', alignSelf: 'flex-start' },
+  headerTitleStyle: { textAlign: 'right', alignSelf: 'center' },
   headerBackTitleStyle: {
     color: darklime
   },
