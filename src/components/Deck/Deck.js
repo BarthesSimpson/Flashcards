@@ -23,7 +23,7 @@ import {
   darklime
 } from '../../common/constants/colors.js'
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   statusBar: {
     height: Constants.statusBarHeight
   },

@@ -13,7 +13,7 @@ import { Constants } from 'expo'
 
 //REDUX
 import { connect } from 'react-redux'
-import { addNewDeck } from '../../ducks/decks'
+import { addNewCard } from '../../ducks/cards'
 
 //STYLING
 import {
@@ -69,9 +69,9 @@ const styles = StyleSheet.create({
 //PARTIALS
 const Form = t.form.Form
 
-const newDeckModel = t.struct({
-  name: t.String,
-  description: t.String
+const newCardModel = t.struct({
+  question: t.String,
+  answer: t.String
 })
 
 const s = t.form.Form.stylesheet
@@ -101,30 +101,36 @@ const options = {
 }
 
 //RENDER
-class NewDeck extends React.Component {
+class NewCard extends React.Component {
   render() {
-    const { addDeck, state, navigation } = this.props
+    console.log(this.props)
+    const { addCard, state, navigation } = this.props
+    const deck = navigation.state.params.deck
     return (
       <View style={styles.container}>
-        <Text style={styles.title}> Add a deck </Text>
+        <Text style={styles.title}> Add a card to {deck} </Text>
         <KeyboardAvoidingView>
           <Form
             ref="form"
-            type={newDeckModel}
+            type={newCardModel}
             options={options}
             stylesheet={stylesheet}
           />
           <TouchableOpacity
             onPress={() => {
-              const deck = this.refs.form.getValue()
-              addDeck({ ...deck, id: deck.name }, state, () => {
-                {/* navigation.navigate('Deck', { deck: deck.name }) TODO: Get this working*/}
-                navigation.goBack()
-              })
+              const card = this.refs.form.getValue()
+              addCard(
+                { ...card, deck, id: Date.now().toString() },
+                deck,
+                state,
+                () => {
+                  navigation.goBack()
+                }
+              )
             }}
             style={styles.button}
           >
-            <Text style={styles.buttonText}> Add Deck </Text>
+            <Text style={styles.buttonText}> Add Card </Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
       </View>
@@ -134,6 +140,7 @@ class NewDeck extends React.Component {
 
 const mapStateToProps = state => ({ state })
 const mapDispatchToProps = dispatch => ({
-  addDeck: (deck, state, next) => dispatch(addNewDeck(deck, state, next))
+  addCard: (card, deck, state, next) =>
+    dispatch(addNewCard(card, deck, state, next))
 })
-export default connect(mapStateToProps, mapDispatchToProps)(NewDeck)
+export default connect(mapStateToProps, mapDispatchToProps)(NewCard)

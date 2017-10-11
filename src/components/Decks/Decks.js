@@ -95,7 +95,9 @@ const DecksList = (decks, deckLengths, navigation, deleteDeck, state) => {
                   name="close"
                   size={20}
                   onPress={e => {
-                    {/* e.preventDefault() */}
+                    {
+                      /* e.preventDefault() */
+                    }
                     e.stopPropagation()
                     deleteDeck(d, state)
                   }}
@@ -110,17 +112,6 @@ const DecksList = (decks, deckLengths, navigation, deleteDeck, state) => {
   )
 }
 
-const DeckAdder = navigation => {
-  return (
-    <TouchableOpacity
-      onPress={() => navigation.navigate('NewDeck')}
-      style={[styles.deckbox, styles.adder]}
-    >
-      <Text style={[styles.deckTitle, styles.adderText]}>Add a Deck</Text>
-    </TouchableOpacity>
-  )
-}
-
 //RENDER
 export const Decks = ({
   decks,
@@ -131,7 +122,8 @@ export const Decks = ({
   deleteDeck,
   state
 }) => {
-  // console.log({ screenProps, navigation })
+  console.log({ screenProps, navigation })
+  console.log(screenProps.navigation)
   return (
     <View style={styles.card}>
       {deckTitles.length ? (
@@ -139,7 +131,12 @@ export const Decks = ({
       ) : (
         <Text>You don't have any decks yet!</Text>
       )}
-      {DeckAdder(screenProps.rootNavigation)}
+      <TouchableOpacity
+        onPress={() => screenProps.rootNavigation.navigate('NewDeck')}
+        style={[styles.deckbox, styles.adder]}
+      >
+        <Text style={[styles.deckTitle, styles.adderText]}>Add a Deck</Text>
+      </TouchableOpacity>
     </View>
   )
 }
