@@ -104,17 +104,22 @@ const options = {
 class UpsertCard extends React.Component {
   render() {
     console.log(this.props)
-    const { writeCard, state, navigation, oldCard } = this.props
+    const { writeCard, state, navigation } = this.props
     const deck = navigation.state.params.deck
+    const oldCard = navigation.state.params.oldCard
     return (
       <View style={styles.container}>
-        <Text style={styles.title}> Add a card to {deck} </Text>
+        <Text style={styles.title}>
+          {oldCard ? 'Update card in ' : 'Add card to '}
+          {deck}
+        </Text>
         <KeyboardAvoidingView>
           <Form
             ref="form"
             type={newCardModel}
             options={options}
             stylesheet={stylesheet}
+            value={oldCard ? oldCard : null}
           />
           <TouchableOpacity
             onPress={() => {

@@ -13,7 +13,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 
 //REDUX
 import { connect } from 'react-redux'
-import { getCards } from '../../ducks/cards'
+import { getCards, removeCard, upsertCard } from '../../ducks/cards'
 
 //STYLING
 import {
@@ -62,7 +62,14 @@ const styles = StyleSheet.create({
 
 //RENDER
 //TODO: Add batch delete and delete confirmation dialog
-export const Edit = ({ screenProps, navigation, deck, cards }) => (
+export const Edit = ({
+  screenProps,
+  navigation,
+  deck,
+  cards,
+  state,
+  deleteCard
+}) => (
   <View style={{ backgroundColor: base, flex: 1 }}>
     <TouchableOpacity
       onPress={() =>
@@ -94,6 +101,11 @@ export const Edit = ({ screenProps, navigation, deck, cards }) => (
                 color={darklime}
                 backgroundColor={firebrick}
                 style={{ flex: 0.5 }}
+                onPress={() =>
+                  screenProps.rootNavigation.navigate('UpsertCard', {
+                    deck,
+                    oldCard: item
+                  })}
               />
 
               <Icon.Button
@@ -102,6 +114,7 @@ export const Edit = ({ screenProps, navigation, deck, cards }) => (
                 color={darklime}
                 backgroundColor={firebrick}
                 style={{ flex: 0.5 }}
+                onPress={() => deleteCard(item.id, state)}
               />
             </View>
           </View>
@@ -116,12 +129,15 @@ const mapStateToProps = (state, props) => {
   const deck = props.navigation.state.params.deck.id
   return {
     deck,
+    state,
     cards: getCards(deck)(state)
   }
 }
 
 const mapDispatchToProps = dispatch => {
-  return {}
+  return {
+    deleteCard: (id, state, next) => dispatch(removeCard(id, state, next))
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Edit)

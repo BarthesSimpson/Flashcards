@@ -107,3 +107,10 @@ export function upsertCard(card, deck, state, next) {
     )
   }
 }
+
+export function removeCard(id, state, next) {
+  return async dispatch => {
+    dispatch(deleteCard(id))
+    dispatch(setStoredData({ ...state, cards: _.omit(state.cards, id) }, next))
+  }
+}

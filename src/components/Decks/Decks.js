@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
 // PARTIALS
 
 //TODO: add a confirm delete deck dialog
+//TODO: delete all cards (or do something with them) when parent deck is deleted
 const DecksList = (decks, deckLengths, navigation, deleteDeck, state) => {
   return (
     <View style={{ flex: 1, flexDirection: 'row' }}>
