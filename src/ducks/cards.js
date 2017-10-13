@@ -6,6 +6,7 @@ export const CREATE = 'flashcards/cards/CREATE'
 export const READ = 'flashcards/cards/READ'
 export const UPDATE = 'flashcards/cards/UPDATE'
 export const DELETE = 'flashcards/cards/DELETE'
+import { setStoredData } from './decks'
 
 // Reducer
 export const initialState = {
@@ -93,3 +94,16 @@ export const getCards = deck =>
       .filter(key => cards[key].deck === deck)
       .map(key => cards[key])
   )
+
+// Side effects & async
+export function upsertCard(card, deck, state, next) {
+  return async dispatch => {
+    dispatch(createCard(card, deck))
+    dispatch(
+      setStoredData(
+        { ...state, cards: { ...state.cards, [card.id]: card } },
+        next
+      )
+    )
+  }
+}

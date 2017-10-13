@@ -13,7 +13,7 @@ import { Constants } from 'expo'
 
 //REDUX
 import { connect } from 'react-redux'
-import { addNewCard } from '../../ducks/cards'
+import { upsertCard } from '../../ducks/cards'
 
 //STYLING
 import {
@@ -101,10 +101,10 @@ const options = {
 }
 
 //RENDER
-class NewCard extends React.Component {
+class UpsertCard extends React.Component {
   render() {
     console.log(this.props)
-    const { addCard, state, navigation } = this.props
+    const { writeCard, state, navigation, oldCard } = this.props
     const deck = navigation.state.params.deck
     return (
       <View style={styles.container}>
@@ -119,18 +119,18 @@ class NewCard extends React.Component {
           <TouchableOpacity
             onPress={() => {
               const card = this.refs.form.getValue()
-              addCard(
-                { ...card, deck, id: Date.now().toString() },
-                deck,
-                state,
-                () => {
-                  navigation.goBack()
-                }
-              )
+              const newCard = oldCard
+                ? { ...oldCard, ...card }
+                : { ...card, deck, id: Date.now().toString() }
+              writeCard(newCard, deck, state, () => {
+                navigation.goBack()
+              })
             }}
             style={styles.button}
           >
-            <Text style={styles.buttonText}> Add Card </Text>
+            <Text style={styles.buttonText}>
+              {oldCard ? 'Update ' : 'Add '} Card
+            </Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
       </View>
@@ -140,7 +140,7 @@ class NewCard extends React.Component {
 
 const mapStateToProps = state => ({ state })
 const mapDispatchToProps = dispatch => ({
-  addCard: (card, deck, state, next) =>
-    dispatch(addNewCard(card, deck, state, next))
+  writeCard: (card, deck, state, next) =>
+    dispatch(upsertCard(card, deck, state, next))
 })
-export default connect(mapStateToProps, mapDispatchToProps)(NewCard)
+export default connect(mapStateToProps, mapDispatchToProps)(UpsertCard)

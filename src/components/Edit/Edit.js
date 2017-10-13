@@ -1,7 +1,15 @@
 //REACT
 import React from 'react'
-import { TouchableOpacity, View, Text, StyleSheet } from 'react-native'
+import {
+  TouchableOpacity,
+  TouchableHighlight,
+  FlatList,
+  View,
+  Text,
+  StyleSheet
+} from 'react-native'
 import { Constants } from 'expo'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 //REDUX
 import { connect } from 'react-redux'
@@ -18,6 +26,21 @@ import {
 } from '../../common/constants/colors.js'
 
 const styles = StyleSheet.create({
+  miniCard: {
+    backgroundColor: firebrick,
+    flexDirection: 'row',
+    alignSelf: 'stretch',
+    padding: 10,
+    marginBottom: 1
+  },
+  questionText: {
+    fontSize: 16,
+    fontWeight: '400',
+    color: eggyolk
+  },
+  answerText: {
+    fontSize: 14
+  },
   button: {
     backgroundColor: firebrick,
     alignSelf: 'stretch',
@@ -38,16 +61,53 @@ const styles = StyleSheet.create({
 })
 
 //RENDER
+//TODO: Add batch delete and delete confirmation dialog
 export const Edit = ({ screenProps, navigation, deck, cards }) => (
-  <View>
-    <Text>{navigation.state.params.deck.id}</Text>
-    {cards.map(c => <Text key={c.id}>{c.question}</Text>)}
+  <View style={{ backgroundColor: base, flex: 1 }}>
     <TouchableOpacity
-      onPress={() => screenProps.rootNavigation.navigate('NewCard', { deck })}
+      onPress={() =>
+        screenProps.rootNavigation.navigate('UpsertCard', { deck })}
       style={[styles.button, styles.liteButton]}
     >
       <Text style={[styles.buttonText, styles.liteButtonText]}>Add a Card</Text>
     </TouchableOpacity>
+    <FlatList
+      data={cards.map(c => ({ ...c, key: c.id }))}
+      renderItem={({ item }) => {
+        console.log({ item })
+        return (
+          <View style={styles.miniCard}>
+            <View style={{ flex: 0.8 }}>
+              <Text style={styles.questionText}>{item.question}</Text>
+              <Text style={styles.answerText}>{item.answer}</Text>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                flex: 0.2
+              }}
+            >
+              <Icon.Button
+                name="pencil-square-o"
+                size={16}
+                color={darklime}
+                backgroundColor={firebrick}
+                style={{ flex: 0.5 }}
+              />
+
+              <Icon.Button
+                name="minus-circle"
+                size={16}
+                color={darklime}
+                backgroundColor={firebrick}
+                style={{ flex: 0.5 }}
+              />
+            </View>
+          </View>
+        )
+      }}
+    />
   </View>
 )
 

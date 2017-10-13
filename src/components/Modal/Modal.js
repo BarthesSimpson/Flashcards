@@ -2,7 +2,7 @@ import React from 'react'
 import { StackNavigator } from 'react-navigation'
 import Navigator from '../Navigator'
 import NewDeck from '../NewDeck'
-import NewCard from '../NewCard'
+import UpsertCard from '../UpsertCard'
 import { Constants } from 'expo'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -25,7 +25,7 @@ const ModalNavigator = StackNavigator(
       )
     },
     NewDeck: { screen: NewDeck },
-    NewCard: { screen: NewCard },
+    UpsertCard: { screen: UpsertCard },
   },
   {
     mode: 'modal',

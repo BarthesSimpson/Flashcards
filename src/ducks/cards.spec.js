@@ -18,6 +18,7 @@ import { getCards } from './cards'
 
 //async
 import { getStoredCards } from './cards'
+import { upsertCard } from './cards'
 
 //reducer
 import { initialState } from './cards'
@@ -122,3 +123,5 @@ describe('Cards selectors work correctly', () => {
     expect(getCards('Jokes')(state)).toEqual(jokeCards)
   })
 })
+
+//TODO Add async test for upsertCard

@@ -4,7 +4,7 @@ import {
   TouchableOpacity,
   Image,
   View,
-  // FlatList,
+  FlatList,
   Text,
   StyleSheet
 } from 'react-native'
@@ -62,26 +62,25 @@ const styles = StyleSheet.create({
 
 // PARTIALS
 
-//TODO: change the container View to a FlatList (once I fix the SDK bug )
-//TODO: add a confirmation when user deletes a Deck
+//TODO: add a confirm delete deck dialog
 const DecksList = (decks, deckLengths, navigation, deleteDeck, state) => {
   return (
     <View style={{ flex: 1, flexDirection: 'row' }}>
       <Image style={{ flex: 0.3, backgroundColor: base }} source={flashdance} />
       <View style={styles.container}>
-        {Object.keys(decks).map(d => {
-          return (
+        <FlatList
+          data={Object.keys(decks).map(k => ({ deck: k, key: k }))}
+          renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('Deck', { deck: decks[d] })
+                navigation.navigate('Deck', { deck: decks[item.deck] })
               }}
               style={styles.deckbox}
-              key={d}
             >
               <View style={{ flex: 0.9 }}>
-                <Text style={styles.deckTitle}>{d}</Text>
+                <Text style={styles.deckTitle}>{item.deck}</Text>
                 <Text style={styles.cardCount}>{`(${deckLengths[
-                  d
+                  item.deck
                 ]} cards)`}</Text>
               </View>
               <View
@@ -95,18 +94,15 @@ const DecksList = (decks, deckLengths, navigation, deleteDeck, state) => {
                   name="close"
                   size={20}
                   onPress={e => {
-                    {
-                      /* e.preventDefault() */
-                    }
                     e.stopPropagation()
-                    deleteDeck(d, state)
+                    deleteDeck(item.deck, state)
                   }}
                   style={{ flexDirection: 'row' }}
                 />
               </View>
             </TouchableOpacity>
-          )
-        })}
+          )}
+        />
       </View>
     </View>
   )
