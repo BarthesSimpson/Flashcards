@@ -1,5 +1,5 @@
 import React from 'react'
-import NewCard from './'
+import UpsertCard from './'
 import { store } from '../../ducks/'
 import renderer from 'react-test-renderer'
 import testDeck from '../../../test/mock/deck'
@@ -11,7 +11,7 @@ const mockNavigation = {
 
 it('renders without crashing', () => {
   const rendered = renderer
-    .create(<NewCard store={store} navigation={mockNavigation} />)
+    .create(<UpsertCard store={store} navigation={mockNavigation} />)
     .toJSON()
   expect(rendered).toBeTruthy()
 })

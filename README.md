@@ -1,7 +1,7 @@
 
 ** NEED TO MAKE MY OWN PRESET ADDITION WITH THIS IN IT:** 
 `"transformIgnorePatterns": [
-    "node_modules/(?!((jest-)?react-native|react-clone-referenced-element|expo(nent)?|@expo(nent)?/.*|react-navigation|tcomb-form-native))"
+    "node_modules/(?!((jest-)?react-native|react-clone-referenced-element|expo(nent)?|@expo(nent)?/.*|react-navigation|tcomb-form-native|react-native-flashcards))"
   ]`
 
 

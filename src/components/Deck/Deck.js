@@ -75,19 +75,20 @@ const DeckDescription = (deck, deckLength) => (
   </View>
 )
 
-const Buttons = (start, edit) => {
+const Buttons = (start, edit, deckLength) => {
   return (
     <View style={styles.buttons}>
-      <TouchableOpacity onPress={start} style={styles.button}>
-        <Text style={styles.buttonText}> Start Quiz </Text>
-      </TouchableOpacity>
+      {deckLength > 0 && (
+        <TouchableOpacity onPress={start} style={styles.button}>
+          <Text style={styles.buttonText}> Start Quiz </Text>
+        </TouchableOpacity>
+      )}
       <TouchableOpacity
         onPress={edit}
         style={[styles.button, styles.liteButton]}
       >
         <Text style={[styles.buttonText, styles.liteButtonText]}>
-          {' '}
-          View/Edit Cards{' '}
+          View/Edit Cards
         </Text>
       </TouchableOpacity>
     </View>
@@ -106,7 +107,11 @@ export const Deck = ({ navigation, deckLength }) => {
   return (
     <View style={styles.container}>
       {DeckDescription(deck, deckLength)}
-      {Buttons(startQuiz(navigation, deck), editDeck(navigation, deck))}
+      {Buttons(
+        startQuiz(navigation, deck),
+        editDeck(navigation, deck),
+        deckLength
+      )}
     </View>
   )
 }

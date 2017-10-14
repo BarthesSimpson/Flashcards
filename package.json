@@ -27,7 +27,9 @@
     "prop-types": "^15.6.0",
     "react": "16.0.0-alpha.12",
     "react-native": "^0.48.4",
+    "react-native-elements": "^0.17.0",
     "react-native-flip-card": "^3.5.1",
+    "react-native-material-design": "^0.3.7",
     "react-native-navigation": "^1.1.235",
     "react-native-vector-icons": "^4.4.2",
     "react-navigation": "^1.0.0-beta.13",
@@ -39,6 +41,7 @@
     "remote-redux-devtools": "^0.5.12",
     "reselect": "^3.0.1",
     "styled-components": "^2.1.2",
-    "tcomb-form-native": "^0.6.10"
+    "tcomb-form-native": "^0.6.10",
+    "yarn": "^1.2.1"
   }
 }

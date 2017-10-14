@@ -3,9 +3,12 @@ import React from 'react'
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native'
 import { Constants } from 'expo'
 import FlipCard from 'react-native-flip-card'
+import { Button, Divider } from 'react-native-material-design'
+import { Icon } from 'react-native-elements'
 
 //REDUX
 import { connect } from 'react-redux'
+import { getCards } from '../../ducks/cards'
 
 //STYLING
 import {
@@ -19,7 +22,8 @@ import {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: base
   },
   card: {
     backgroundColor: accent2,
@@ -32,26 +36,134 @@ const styles = StyleSheet.create({
   back: {
     backgroundColor: accent1,
     flex: 1
+  },
+  cardCount: {
+    paddingLeft: 12,
+    paddingTop: 12,
+    paddingBottom: 12,
+    fontSize: 12,
+    color: eggyolk
+  },
+  cardCountBack: {
+    color: darklime
+  },
+  question: {
+    fontSize: 18,
+    color: eggyolk,
+    textAlign: 'center'
+  },
+  answer: {
+    fontSize: 18,
+    color: darklime,
+    textAlign: 'center'
+  },
+  scoreButtons: {
+    marginTop: 12,
+    paddingTop: 12,
+    paddingBottom: 12,
+    backgroundColor: eggyolk
+  },
+  scoreButtonsFront: {
+    backgroundColor: base
   }
+  // flipButton: {
+  //   flexDirection: 'row',
+  //   width: 100,
+  //   alignSelf: 'center',
+  //   backgroundColor: accent2
+  // },
+  // flipButtonText: {
+  //   color: darklime,
+  //   textAlign: 'center',
+  //   paddingLeft: 12,
+  //   paddingTop: 12,
+  //   paddingRight: 12,
+  //   paddingBottom: 12
+  // }
 })
 
 //RENDER
 class Quiz extends React.Component {
-
   constructor(props) {
     super(props)
     this.state = {
-      flip: false
+      flip: false,
+      hasFlipped: false,
+      cardNumber: 0
     }
   }
 
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({ flip: true })
-    }, 1000)
+  cardCount(side) {
+    const { cards } = this.props
+    const style =
+      side === 'back'
+        ? [styles.cardCount, styles.cardCountBack]
+        : styles.cardCount
+    return (
+      <Text style={style}>{`(${this.state.cardNumber +
+        1} of ${cards.length})`}</Text>
+    )
+  }
+
+  flipButton() {
+    return (
+      <Button
+        text="Flip"
+        raised={true}
+        overrides={{
+          backgroundColor: accent2,
+          textColor: darklime
+        }}
+        style={styles.flipButton}
+        onPress={() => {
+          this.setState({
+            ...this.state,
+            flip: !this.state.flip,
+            hasFlipped: true
+          })
+        }}
+      />
+    )
+  }
+
+  scoreButtons(side) {
+    const containerStyle =
+      side === 'front'
+        ? [styles.scoreButtons, styles.scoreButtonsFront]
+        : styles.scoreButtons
+    return (
+      <View style={containerStyle}>
+        <Text style={{ textAlign: 'center' }}>Did you get it right?</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-around'
+          }}
+        >
+          <Icon
+            reverse
+            raised
+            name="check"
+            color={accent1}
+            reverseColor={darklime}
+          />
+          <Icon
+            reverse
+            raised
+            name="clear"
+            color={side === 'front' ? firebrick : base}
+            reverseColor={darklime}
+          />
+        </View>
+      </View>
+    )
   }
   render() {
-    return (
+    const { deck } = this.props.navigation.state.params
+    const { cards } = this.props
+    return cards.length === 0 ? (
+      <Text> You need to add cards before you can do a quiz! </Text>
+    ) : (
       <View style={styles.container}>
         <FlipCard
           style={styles.card}
@@ -61,15 +173,22 @@ class Quiz extends React.Component {
           flipVertical={false}
           flip={this.state.flip}
           clickable={false}
-          onFlipEnd={isFlipEnd => {
-            console.log('isFlipEnd', isFlipEnd)
-          }}
         >
           <View style={styles.face}>
-            <Text>The Face</Text>
+            {this.cardCount()}
+            <Text style={styles.question}>
+              {cards[this.state.cardNumber].question}
+            </Text>
+            {this.flipButton()}
+            {this.state.hasFlipped && this.scoreButtons('front')}
           </View>
           <View style={styles.back}>
-            <Text>The Back</Text>
+            {this.cardCount('back')}
+            <Text style={styles.answer}>
+              {cards[this.state.cardNumber].answer}
+            </Text>
+            {this.flipButton()}
+            {this.scoreButtons()}
           </View>
         </FlipCard>
       </View>
@@ -77,8 +196,11 @@ class Quiz extends React.Component {
   }
 }
 //CONNECT
-const mapStateToProps = state => {
-  return {}
+const mapStateToProps = (state, props) => {
+  const deck = props.navigation.state.params.deck.id
+  return {
+    cards: getCards(deck)(state)
+  }
 }
 
 const mapDispatchToProps = dispatch => {
