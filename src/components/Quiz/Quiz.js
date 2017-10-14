@@ -66,20 +66,6 @@ const styles = StyleSheet.create({
   scoreButtonsFront: {
     backgroundColor: base
   }
-  // flipButton: {
-  //   flexDirection: 'row',
-  //   width: 100,
-  //   alignSelf: 'center',
-  //   backgroundColor: accent2
-  // },
-  // flipButtonText: {
-  //   color: darklime,
-  //   textAlign: 'center',
-  //   paddingLeft: 12,
-  //   paddingTop: 12,
-  //   paddingRight: 12,
-  //   paddingBottom: 12
-  // }
 })
 
 //RENDER
@@ -89,7 +75,8 @@ class Quiz extends React.Component {
     this.state = {
       flip: false,
       hasFlipped: false,
-      cardNumber: 0
+      cardNumber: 0,
+      score: 0
     }
   }
 
@@ -126,6 +113,19 @@ class Quiz extends React.Component {
     )
   }
 
+  score(correct) {
+    const { cards, navigation } = this.props
+    const { cardNumber, score } = this.state
+    cardNumber === cards.length - 1
+      ? console.log('argufy')
+      : this.setState({
+          ...this.state,
+          flip: false,
+          hasFlipped: false,
+          cardNumber: cardNumber + 1,
+          score: score + correct
+        })
+  }
   scoreButtons(side) {
     const containerStyle =
       side === 'front'
@@ -146,6 +146,9 @@ class Quiz extends React.Component {
             name="check"
             color={accent1}
             reverseColor={darklime}
+            onPress={() => {
+              this.score(1)
+            }}
           />
           <Icon
             reverse
@@ -153,6 +156,9 @@ class Quiz extends React.Component {
             name="clear"
             color={side === 'front' ? firebrick : base}
             reverseColor={darklime}
+            onPress={() => {
+              this.score(0)
+            }}
           />
         </View>
       </View>
@@ -185,7 +191,8 @@ class Quiz extends React.Component {
           <View style={styles.back}>
             {this.cardCount('back')}
             <Text style={styles.answer}>
-              {cards[this.state.cardNumber].answer}
+              {/* hide the answer of next card! */}
+              {this.state.hasFlipped && cards[this.state.cardNumber].answer}
             </Text>
             {this.flipButton()}
             {this.scoreButtons()}

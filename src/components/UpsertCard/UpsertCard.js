@@ -28,7 +28,8 @@ import {
 const styles = StyleSheet.create({
   title: {
     fontSize: 24,
-    marginBottom: 10
+    marginBottom: 10,
+    paddingLeft: 12
   },
   input: {
     marginTop: 16
@@ -103,7 +104,6 @@ const options = {
 //RENDER
 class UpsertCard extends React.Component {
   render() {
-    console.log(this.props)
     const { writeCard, state, navigation } = this.props
     const deck = navigation.state.params.deck
     const oldCard = navigation.state.params.oldCard
@@ -124,12 +124,14 @@ class UpsertCard extends React.Component {
           <TouchableOpacity
             onPress={() => {
               const card = this.refs.form.getValue()
-              const newCard = oldCard
-                ? { ...oldCard, ...card }
-                : { ...card, deck, id: Date.now().toString() }
-              writeCard(newCard, deck, state, () => {
-                navigation.goBack()
-              })
+              if (card) {
+                const newCard = oldCard
+                  ? { ...oldCard, ...card }
+                  : { ...card, deck, id: Date.now().toString() }
+                writeCard(newCard, deck, state, () => {
+                  navigation.goBack()
+                })
+              }
             }}
             style={styles.button}
           >

@@ -28,7 +28,8 @@ import {
 const styles = StyleSheet.create({
   title: {
     fontSize: 24,
-    marginBottom: 10
+    marginBottom: 10,
+    paddingLeft: 6
   },
   input: {
     marginTop: 16
