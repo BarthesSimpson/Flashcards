@@ -37,6 +37,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 10
   },
+  cardCount: {
+    fontSize: 12,
+    color: eggyolk,
+    textAlign: 'center'
+  },
   buttons: {
     marginTop: 10,
     marginBottom: 10
@@ -45,7 +50,7 @@ const styles = StyleSheet.create({
     backgroundColor: firebrick,
     alignSelf: 'stretch',
     padding: 10,
-    marginBottom: 1,
+    marginBottom: 1
   },
   liteButton: {
     backgroundColor: accent1
@@ -61,9 +66,14 @@ const styles = StyleSheet.create({
 })
 
 // PARTIALS
-const DeckDescription = deck => {
-  return <Text style={styles.deckDescription}>{deck.description}</Text>
-}
+const DeckDescription = (deck, deckLength) => (
+  <View>
+    <Text style={styles.deckDescription}>{deck.description}</Text>
+    <Text style={styles.cardCount}>
+      {`(${deckLength} card${deckLength === 1 ? '' : 's'})`}
+    </Text>
+  </View>
+)
 
 const Buttons = (start, edit) => {
   return (
@@ -91,11 +101,14 @@ const editDeck = navigation => () =>
   navigation.navigate('Edit', { deck: navigation.state.params.deck })
 
 //RENDER
-export const Deck = ({ navigation }) => (
-  <View style={styles.container}>
-    {DeckDescription(navigation.state.params.deck)}
-    {Buttons(startQuiz(navigation), editDeck(navigation))}
-  </View>
-)
+export const Deck = ({ navigation }) => {
+  const { deck, deckLength } = navigation.state.params
+  return (
+    <View style={styles.container}>
+      {DeckDescription(deck, deckLength)}
+      {Buttons(startQuiz(navigation), editDeck(navigation))}
+    </View>
+  )
+}
 
 export default Deck

@@ -71,38 +71,44 @@ const DecksList = (decks, deckLengths, navigation, deleteDeck, state) => {
       <View style={styles.container}>
         <FlatList
           data={Object.keys(decks).map(k => ({ deck: k, key: k }))}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('Deck', { deck: decks[item.deck] })
-              }}
-              style={styles.deckbox}
-            >
-              <View style={{ flex: 0.9 }}>
-                <Text style={styles.deckTitle}>{item.deck}</Text>
-                <Text style={styles.cardCount}>{`(${deckLengths[
-                  item.deck
-                ]} cards)`}</Text>
-              </View>
-              <View
-                style={{
-                  flex: 0.1,
-                  justifyContent: 'center',
-                  alignItems: 'center'
+          renderItem={({ item }) => {
+            console.log({ item, deckLengths })
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('Deck', {
+                    deck: decks[item.deck],
+                    deckLength: deckLengths[item.deck]
+                  })
                 }}
+                style={styles.deckbox}
               >
-                <Icon
-                  name="close"
-                  size={20}
-                  onPress={e => {
-                    e.stopPropagation()
-                    deleteDeck(item.deck, state)
+                <View style={{ flex: 0.9 }}>
+                  <Text style={styles.deckTitle}>{item.deck}</Text>
+                  <Text style={styles.cardCount}>{`(${deckLengths[
+                    item.deck
+                  ]} cards)`}</Text>
+                </View>
+                <View
+                  style={{
+                    flex: 0.1,
+                    justifyContent: 'center',
+                    alignItems: 'center'
                   }}
-                  style={{ flexDirection: 'row' }}
-                />
-              </View>
-            </TouchableOpacity>
-          )}
+                >
+                  <Icon
+                    name="close"
+                    size={20}
+                    onPress={e => {
+                      e.stopPropagation()
+                      deleteDeck(item.deck, state)
+                    }}
+                    style={{ flexDirection: 'row' }}
+                  />
+                </View>
+              </TouchableOpacity>
+            )
+          }}
         />
       </View>
     </View>
@@ -119,8 +125,6 @@ export const Decks = ({
   deleteDeck,
   state
 }) => {
-  console.log({ screenProps, navigation })
-  console.log(screenProps.navigation)
   return (
     <View style={styles.card}>
       {deckTitles.length ? (
