@@ -114,17 +114,19 @@ class Quiz extends React.Component {
   }
 
   score(correct) {
-    const { cards, navigation } = this.props
+    const { cards, navigation, screenProps } = this.props
     const { cardNumber, score } = this.state
-    cardNumber === cards.length - 1
-      ? console.log('argufy')
-      : this.setState({
-          ...this.state,
-          flip: false,
-          hasFlipped: false,
-          cardNumber: cardNumber + 1,
-          score: score + correct
-        })
+    if (cardNumber === cards.length - 1) {
+      screenProps.rootNavigation.navigate('QuizResults')
+    } else {
+      this.setState({
+        ...this.state,
+        flip: false,
+        hasFlipped: false,
+        cardNumber: cardNumber + 1,
+        score: score + correct
+      })
+    }
   }
   scoreButtons(side) {
     const containerStyle =

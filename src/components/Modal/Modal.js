@@ -3,6 +3,7 @@ import { StackNavigator } from 'react-navigation'
 import Navigator from '../Navigator'
 import NewDeck from '../NewDeck'
 import UpsertCard from '../UpsertCard'
+import QuizResults from '../QuizResults'
 import { Constants } from 'expo'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -26,6 +27,7 @@ const ModalNavigator = StackNavigator(
     },
     NewDeck: { screen: NewDeck },
     UpsertCard: { screen: UpsertCard },
+    QuizResults: { screen: QuizResults }
   },
   {
     mode: 'modal',
@@ -36,7 +38,7 @@ const ModalNavigator = StackNavigator(
         paddingTop: Constants.statusBarHeight,
         paddingLeft: Constants.statusBarHeight
       },
-      headerLeft: CancelButt({navigation})
+      headerLeft: CancelButt({ navigation })
     })
   }
 )
