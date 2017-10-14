@@ -95,20 +95,22 @@ const Buttons = (start, edit) => {
 }
 
 // NAVIGATION THUNKS
-const startQuiz = navigation => () =>
-  navigation.navigate('Quiz', { deck: navigation.state.params.deck })
-const editDeck = navigation => () =>
-  navigation.navigate('Edit', { deck: navigation.state.params.deck })
+const startQuiz = (navigation, deck) => () =>
+  navigation.navigate('Quiz', { deck })
+const editDeck = (navigation, deck) => () =>
+  navigation.navigate('Edit', { deck })
 
 //RENDER
-export const Deck = ({ navigation }) => {
-  const { deck, deckLength } = navigation.state.params
+export const Deck = ({ navigation, deckLength }) => {
+  const { deck } = navigation.state.params
   return (
     <View style={styles.container}>
       {DeckDescription(deck, deckLength)}
-      {Buttons(startQuiz(navigation), editDeck(navigation))}
+      {Buttons(startQuiz(navigation, deck), editDeck(navigation, deck))}
     </View>
   )
 }
-
-export default Deck
+const mapStateToProps = (state, props) => ({
+  deckLength: getDeckLengths(state)[props.navigation.state.params.deck.id]
+})
+export default connect(mapStateToProps)(Deck)

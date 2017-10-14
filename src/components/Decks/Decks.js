@@ -72,13 +72,11 @@ const DecksList = (decks, deckLengths, navigation, deleteDeck, state) => {
         <FlatList
           data={Object.keys(decks).map(k => ({ deck: k, key: k }))}
           renderItem={({ item }) => {
-            console.log({ item, deckLengths })
             return (
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate('Deck', {
                     deck: decks[item.deck],
-                    deckLength: deckLengths[item.deck]
                   })
                 }}
                 style={styles.deckbox}

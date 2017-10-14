@@ -117,10 +117,11 @@ class NewDeck extends React.Component {
           <TouchableOpacity
             onPress={() => {
               const deck = this.refs.form.getValue()
-              addDeck({ ...deck, id: deck.name }, state, () => {
-                {/* navigation.navigate('Deck', { deck: deck.name }) TODO: Get this working*/}
-                navigation.goBack()
-              })
+              if (deck) {
+                addDeck({ ...deck, id: deck.name }, state, () => {
+                  navigation.goBack()
+                })
+              }
             }}
             style={styles.button}
           >
