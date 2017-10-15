@@ -19,7 +19,10 @@
     "test": "node node_modules/jest/bin/jest.js --watch"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "transformIgnorePatterns": [
+      "node_modules/(?!((jest-)?react-native|react-clone-referenced-element|expo(nent)?|@expo(nent)?/.*|react-navigation|tcomb-form-native|react-native-flashcards))"
+    ]
   },
   "dependencies": {
     "expo": "^21.0.0",

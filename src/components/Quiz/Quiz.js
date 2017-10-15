@@ -115,9 +115,20 @@ class Quiz extends React.Component {
 
   score(correct) {
     const { cards, navigation, screenProps } = this.props
+    const { deck } = navigation.state.params
     const { cardNumber, score } = this.state
     if (cardNumber === cards.length - 1) {
-      screenProps.rootNavigation.navigate('QuizResults')
+      screenProps.rootNavigation.navigate('QuizResults', {
+        deck,
+        cards,
+        score: score + correct
+      })
+      this.setState({
+        flip: false,
+        hasFlipped: false,
+        cardNumber: 0,
+        score: 0
+      })
     } else {
       this.setState({
         ...this.state,
