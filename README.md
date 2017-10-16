@@ -1,10 +1,5 @@
 
-** NEED TO MAKE MY OWN PRESET ADDITION WITH THIS IN IT:** 
-`"transformIgnorePatterns": [
-    "node_modules/(?!((jest-)?react-native|react-clone-referenced-element|expo(nent)?|@expo(nent)?/.*|react-navigation|tcomb-form-native|react-native-flashcards))"
-  ]`
-
-
+** need to explain why I have the add deck button embedded in a subview, and why i go back home instead of going back to single deck view
 
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 
