@@ -16,6 +16,10 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 //REDUX
 import { connect } from 'react-redux'
 import { getCards, removeCard, upsertCard } from '../../ducks/cards'
+import {
+  clearLocalNotification,
+  setLocalNotification
+} from '../../ducks/notifications'
 
 //STYLING
 import shebang from '../../img/shebang.png'
@@ -85,6 +89,11 @@ class QuizResults extends React.Component {
       return true
     })
   }
+
+  componentDidMount() {
+    clearLocalNotification().then(setLocalNotification)
+  }
+
   buttons() {
     const { navigation } = this.props
     const { deck } = navigation.state.params
